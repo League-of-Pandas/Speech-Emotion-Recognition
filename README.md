@@ -12,7 +12,7 @@ a program that takes a sound file contains speech and analyzie the emotions of t
 
 ## Trello board
 
-https://trello.com/b/gnFGr9Nu/speech-emotion-recognition
+[Trello-board](https://trello.com/b/gnFGr9Nu/speech-emotion-recognition)
 
 ## User Stories:
 
