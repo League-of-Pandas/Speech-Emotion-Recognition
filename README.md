@@ -16,43 +16,55 @@ a program that takes a sound file contains speech and analyzie the emotions of t
 
 ## User Stories:
 
-1. As a user I would want the program to be able to extract sound features.
-  Feature Tasks:
+1- As a user I would want the program to be able to extract sound features that I can enter any files I want.
+
+Feature Tasks:
 
 - User can choose sound files to be extract.
 
-  Acceptance Tests:
+Acceptance Tests:
 
-- Ensure that the user picked the correct path file.
-
-  Estimates Time:
-
-- 4 Hours
-
-* given : user enter the sound file successfully.
-* when : user can choose sound from its path.
-* then : the file is read correctly without errors.
-
-
-2. As a user I want to see The emotion of a certain speaker is extracted from a sound file and shown.
- Feature Tasks:
-
-- User can see the values of each emotion and see the dominant emotions for a set of sound files.
+- given : user not enter the sound file yet.
+- when : user will choose sound from its path correctly.
+- then : the file is read correctly without errors.
 
 Acceptance Tests:
 
-- Ensure that the estimated values shown to the user in the correct form.
+- given : user not enter the sound file yet  .
+- when : user choose the wrong sound file path.
+- then : an error message shown to them.
 
 Estimates Time:
 
-- 2 Hours
+- 4 Hours
 
-* given: user can see the emotion resulted from a sound file.
-* when : they enter the path of sound file they want to analyze .
-* then :  the emotion related to speech is recognized correctly.
+***
 
+2- As a user I want to see The emotion of a certain speaker is extracted from a sound file and shown so that I can know how a certain person feels.
 
-3. As a user I would want to view How accurate the resulted emotion is.
+Feature Tasks:
+
+- User can see the emotion resulted from the input of speech.
+
+Acceptance Tests:
+
+- given: user entered the sound file and waiting for the results .
+- when : they enter the path of sound file they want to analyze .
+- then :  the emotion related to speech is recognized correctly.
+
+Acceptance Tests:
+
+- given: user entered the sound file and waiting for the results .
+- when : they enter the path of sound file they want to analyze .
+- then :  the emotion related to speech is recognized not correctly.
+
+Estimates Time:
+
+- 4 Hours
+
+***
+
+3- As a user I want to to see the accuracy of the resulted emotion so that I can know if the application works correctly.
 
 Feature Tasks:
 
@@ -60,50 +72,62 @@ Feature Tasks:
 
 Acceptance Tests:
 
-- Ensure that the accuracy is above 60 .
+- given: user has seen the result.
+- when : they order to see how correct the result is.
+- then :  the accuracy is shown to the user.
+
+Acceptance Tests:
+
+- given: user has seen the result.
+- when : they order to see how correct the result is.
+- then : show message to try with another clear sound file if the accuracy value is low.
 
 Estimates Time:
 
 - 4 Hours
 
-* given: user can see the accuracy of the model.
-* when : they order to see how correct the result is.
-* then : Ensure that the accuracy is above 60.
+***
 
+4- As a user I want to see a visual representation of the sound waves of the sound file so that I can see how the sound transmits through the air.
 
-4. As a user I want to see a visual representation of the sound waves of the sound file.
- Feature Tasks:
+Feature Tasks:
 
 - User can see the visual representation of sound file .
 
 Acceptance Tests:
 
-- Ensure that visual representation matched correctly with expected.
+- given: user has enter of sound file correctly.
+- when : they order from command to print the plot of the sound waves from a specific sound file.
+- then: the visual representation will be shown correctly as expected.
 
 Estimates Time:
 
 - 4 Hours
 
-* given: user can see a visual sound waves.
-* when : they order from command to print the plot from a specific sound file.
-* then: the visual representation will be shown correctly as expected
+***
+5- As a user I want to analyze the change of the mood for a person during the day so that I can suggest a book for them.
 
-5. As a user I want to analyze the change of the mood for a person during the day.
- Feature Tasks:
+Feature Tasks:
 
-- Ability to extract emotions from a number of files and analyze the set of emotions..
+- Ability to extract emotions from a number of files and analyze the set of emotions.
 
- Acceptance Tests:
+Acceptance Tests:
 
-- Ensure that all emotions which related to the files are extracted.
+- given: user has seen the accuracy and app works fine. 
+- when : they insert a number of sound files for the same person.
+- then: all emotions that related to these files will be extracted and shown the result.
 
- Estimates Time:
+Acceptance Tests:
 
-- 2 Hours
+- given: user has seen the accuracy and app works fine. 
+- when : they insert a number of sound files for the same person.
+- then: all emotions that related to these files will be extracted and shown the result.
 
-* given: user can see the analysis for a set of sound files. 
-* when : they insert a number of sound files for the same person.
-* then: all emotions that related to these files will be extracted and shown the result.
+Estimates Time:
+
+- 5 Hours
+
+***
 
 
 ## Domain Modeling
