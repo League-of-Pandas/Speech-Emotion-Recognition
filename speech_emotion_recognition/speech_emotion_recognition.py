@@ -57,7 +57,6 @@ def loading_audio_data():
     x = []
     y = []
     for file in glob('sounds/Actor_*/*.wav'):
-        print(file)
         file_path = os.path.basename(file)
         emotion = emotion_labels[file_path.split("-")[2]]
         if emotion not in focused_emotion_labels:
@@ -76,4 +75,5 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
 print(f"the accuracy of the model is {accuracy}")
+
 
