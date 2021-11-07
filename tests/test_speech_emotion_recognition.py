@@ -1,5 +1,5 @@
 from speech_emotion_recognition import __version__
-from speech_emotion_recognition.speech_emotion_recognition import extract_features
+from speech_emotion_recognition.speech_emotion_recognition import accuracy, extract_features
 import pytest
 
 def test_version():
@@ -19,3 +19,6 @@ def test_extract_features_fail():
         path = "missing.txt"
         extract_features(path,True,True,True)
    
+
+    
+           

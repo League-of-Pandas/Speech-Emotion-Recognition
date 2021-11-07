@@ -70,10 +70,11 @@ def loading_audio_data():
 
 X_train, X_test, y_train, y_test = loading_audio_data()
 
-
 model = MLPClassifier(hidden_layer_sizes=(200,), learning_rate='adaptive', max_iter=400)
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
 print(f"the accuracy of the model is {accuracy}")
+
+
 
