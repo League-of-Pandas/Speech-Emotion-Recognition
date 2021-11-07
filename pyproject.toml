@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "Speech-Emotion-Recognition"
+version = "0.1.0"
+description = ""
+authors = ["anas-abusaif <anasabusief@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+jupyterlab = "^3.2.2"
+librosa = "^0.8.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^21.10b0"
+flake8 = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
