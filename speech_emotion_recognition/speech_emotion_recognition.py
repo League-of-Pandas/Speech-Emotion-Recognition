@@ -2,11 +2,12 @@ import librosa as lb
 import soundfile as sf
 import numpy as np
 import os
+import tkinter as tk
+
 from glob import glob
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
-import tkinter as tk
 from tkinter import filedialog
 
 root = tk.Tk()
@@ -80,6 +81,9 @@ model.fit(X_train, y_train)
 
 def calculate_trained_model_accuracy():
     '''
+    Arguments:
+    None
+
     this function trains the model and calculates the accuracy of it
     Arguments: None
 
@@ -91,35 +95,24 @@ def calculate_trained_model_accuracy():
     return accuracy
 
 
+def choose_file():
+    '''
+    Argumen: None
 
-def extract_sound_features_from_user_input():
-    """
-    this function takes an input file from user and return an array of the sound features for this file
-    Arguments: None
-    returns: list
-    """
-    answer = input('Do you wanna choose a file?(yes/no) \n >')
+    return:
+    returns the path of the choosen file from file explorer
+    '''
+    file_path = filedialog.askopenfilename()
+    return file_path
+
+
+def Extract_user_input_emotion():
+    answer = input('please enter (yes) to choose a file or (anything else) to quit.')
     if answer.lower() == "yes":
         try:
-            print("Choose a file please")
-            file_path = filedialog.askopenfilename()
-            print(file_path)
-            feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
-            return feature
+            path=choose_file()
+            features=extract_features(path,True,True,True)
+            result = model.predict(features.reshape(1,-1))
+            return result
         except Exception as e:
             print("The file doesn't work, enter another file please")
-
-
-
-
-
-
-
-    
-
-    
-
-
-
-
-
