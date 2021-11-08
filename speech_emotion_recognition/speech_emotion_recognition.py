@@ -4,11 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from librosa import display
 import os
+import tkinter as tk
+
 from glob import glob
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
-import tkinter as tk
 from tkinter import filedialog
 
 def extract_features(file_title, mfcc, chroma, mel):
@@ -79,6 +80,9 @@ model.fit(X_train, y_train)
 
 def calculate_trained_model_accuracy():
     '''
+    Arguments:
+    None
+
     this function trains the model and calculates the accuracy of it
     Arguments: None
 
@@ -122,9 +126,7 @@ def extract_user_input_emotion():
     """
     Arguments:
     None
-
     Takes input from the user as a path for a (.wav) file.
-
     return:
     1. The extracted emotion.
     2. The accuracy.
@@ -142,4 +144,3 @@ def extract_user_input_emotion():
             return f"The extracted emotion is : {result[0]}"
         except Exception as e:
             print("The file doesn't work, enter another file please")
-
