@@ -143,3 +143,28 @@ def take_input():
             visualizing_sound(file_path)
         result = model.predict(features.reshape(1,-1))
         return f"The extracted emotion is : {result[0]}"
+
+from statistics import mode
+
+def analyzing_multiple_emotions():
+    """
+    Arguments: None
+    function takes number of sound records and analyze each one to give it related emotion
+    return: list(the list of emotions that given from records in all records)
+    """
+    arr = []
+    number_of_files = input('Please enter the number of records you want to analyze \n')
+    while not number_of_files.isdigit():
+         number_of_files = input('Please enter number \n')
+    for i in range(1, int(number_of_files) + 1):
+            print(f'Please choose sound record {i}?\n')
+            try:
+                file_path = filedialog.askopenfilename()
+                feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
+                result = model.predict(feature.reshape(1, -1))
+                arr.append(result[0])
+            except Exception as e:
+                print("The file doesn't work, enter another file please")
+    return arr
+the_most_common_emotion = analyzing_multiple_emotions()
+mode(the_most_common_emotion)
