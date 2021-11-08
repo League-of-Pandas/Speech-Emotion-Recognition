@@ -7,8 +7,9 @@ authors = ["anas-abusaif <anasabusief@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 jupyterlab = "^3.2.2"
-librosa = "^0.8.1"
 matplotlib = "^3.4.3"
+librosa = "^0.8.1"
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
