@@ -6,6 +6,11 @@ from glob import glob
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
+import tkinter as tk
+from tkinter import filedialog
+
+root = tk.Tk()
+root.withdraw()
 
 def extract_features(file_title, mfcc, chroma, mel):
   '''
@@ -57,7 +62,6 @@ def loading_audio_data():
     x = []
     y = []
     for file in glob('sounds/Actor_*/*.wav'):
-        print(file)
         file_path = os.path.basename(file)
         emotion = emotion_labels[file_path.split("-")[2]]
         if emotion not in focused_emotion_labels:
@@ -68,13 +72,53 @@ def loading_audio_data():
     final_dataset = train_test_split(np.array(x), y, test_size=0.1, random_state=9)
     return final_dataset
 
-X_train, X_test, y_train, y_test = loading_audio_data()
 
 model = MLPClassifier(hidden_layer_sizes=(200,), learning_rate='adaptive', max_iter=400)
-model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
-print(f"the accuracy of the model is {accuracy}")
+X_train, X_test, y_train, y_test = loading_audio_data()
+model.fit(X_train, y_train)  
+
+
+def calculate_trained_model_accuracy():
+    '''
+    this function trains the model and calculates the accuracy of it
+    Arguments: None
+
+    retruns: value (accuracy)
+    '''
+    
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
+    return accuracy
+
+
+
+def extract_sound_features_from_user_input():
+    """
+    this function takes an input file from user and return an array of the sound features for this file
+    Arguments: None
+    returns: list
+    """
+    answer = input('Do you wanna choose a file?(yes/no) \n >')
+    if answer.lower() == "yes":
+        try:
+            print("Choose a file please")
+            file_path = filedialog.askopenfilename()
+            print(file_path)
+            feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
+            return feature
+        except Exception as e:
+            print("The file doesn't work, enter another file please")
+
+
+
+
+
+
+
+    
+
+    
+
 
 
 
