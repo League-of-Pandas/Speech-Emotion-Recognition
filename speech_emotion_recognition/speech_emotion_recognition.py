@@ -96,40 +96,50 @@ def calculate_trained_model_accuracy():
 
 def extract_sound_features_from_user_input(file_path):
         """
-        this function takes a sound file path from the user as input and analyze it to the sound features related to this sound
+        this function takes a sound file (.wav) path from the user as input and analyze it to the sound features related to this sound
         Arguments: string
         returns: list
         """
         try:
-            print("Choose a file please")
-            print(file_path)
             feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
             return feature
         except Exception as e:
-            print("The file doesn't work, enter another file please")  
+            print("The file doesn't work, enter another file please")
+
+
+
+def visualizing_sound(file):
+    '''
+    Argument:
+    a path for a (.wav) file
+
+    return:
+    1. spectogram of the choosen file
+    2. waveform of the choosen file
+    '''
+    x, fs = lb.load(file)
+    lb.display.waveplot(x, sr=fs)
+    X = lb.stft(x)
+    Xdb = lb.amplitude_to_db(abs(X))
+    plt.title('Waveform')
+    plt.figure(figsize=(14, 5))
+    plt.title('Spectogram')
+    lb.display.specshow(Xdb, sr=fs, x_axis='time', y_axis='hz')
+    plt.colorbar()
+
 
 def take_input():
     """
-    this function allows the user to choose a sound file and returns a list from the extract sound features function
+    this function allows the user to choose a sound file and returns the extracted emotion from the input file, the waveform and spectogram of the input file if the user approves
     Arguments: None
     returns: list
     """
-    answer = input('Do you wanna choose a file?(yes/no) \n >')
+    answer = input('Would you like to choose a sound file to extract and show the emotion of the speeker? (yes/no)\n ')
     if answer.lower() == "yes":
         file_path = filedialog.askopenfilename()
-        return extract_sound_features_from_user_input(file_path)
-
-
-
-
-
-
-
-
-    
-
-    
-
-
-
-
+        features=extract_sound_features_from_user_input(file_path)
+        visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
+        if visualization.lower()=='yes':
+            visualizing_sound(file_path)
+        result = model.predict(features.reshape(1,-1))
+        return f"The extracted emotion is : {result[0]}"
