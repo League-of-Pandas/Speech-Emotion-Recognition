@@ -95,6 +95,11 @@ def calculate_trained_model_accuracy():
 
 
 def extract_sound_features_from_user_input(file_path):
+        """
+        this function takes a sound file path from the user as input and analyze it to the sound features related to this sound
+        Arguments: string
+        returns: list
+        """
         try:
             print("Choose a file please")
             print(file_path)
@@ -104,6 +109,11 @@ def extract_sound_features_from_user_input(file_path):
             print("The file doesn't work, enter another file please")  
 
 def take_input():
+    """
+    this function allows the user to choose a sound file and returns a list from the extract sound features function
+    Arguments: None
+    returns: list
+    """
     answer = input('Do you wanna choose a file?(yes/no) \n >')
     if answer.lower() == "yes":
         file_path = filedialog.askopenfilename()
