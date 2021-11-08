@@ -1,6 +1,8 @@
+import builtins
 from speech_emotion_recognition import __version__
 from speech_emotion_recognition import speech_emotion_recognition
 from tkinter import filedialog
+from unittest.mock import patch
 import pytest
 
 def test_version():
@@ -21,7 +23,9 @@ def test_extract_features_fail():
         speech_emotion_recognition.extract_features(path,True,True,True)
 
 
-
+def test_extracting_features_from_input():
+    actual = speech_emotion_recognition.extract_sound_features_from_user_input('sm1_cln.wav')
+    expected = -284.02972412109375
+    assert list(actual)[0] == expected
 
     
-           

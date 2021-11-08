@@ -93,15 +93,20 @@ def calculate_trained_model_accuracy():
     accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
     return accuracy
 
-def choose_file():
-    '''
-    Argumen: None
 
-    return:
-    returns the path of the choosen file from file explorer
-    '''
-    file_path = filedialog.askopenfilename()
-    return file_path
+def extract_sound_features_from_user_input(file_path):
+        """
+        this function takes a sound file (.wav) path from the user as input and analyze it to the sound features related to this sound
+        Arguments: string
+        returns: list
+        """
+        try:
+            feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
+            return feature
+        except Exception as e:
+            print("The file doesn't work, enter another file please")
+
+
 
 def visualizing_sound(file):
     '''
@@ -122,25 +127,19 @@ def visualizing_sound(file):
     lb.display.specshow(Xdb, sr=fs, x_axis='time', y_axis='hz')
     plt.colorbar()
 
-def extract_user_input_emotion():
+
+def take_input():
     """
-    Arguments:
-    None
-    Takes input from the user as a path for a (.wav) file.
-    return:
-    1. The extracted emotion.
-    2. The accuracy.
-    3. waveform and spectogram graphs if the user approved.
+    this function allows the user to choose a sound file and returns the extracted emotion from the input file, the waveform and spectogram of the input file if the user approves
+    Arguments: None
+    returns: list
     """
-    answer = input('please enter (yes) to choose a file or (anything else) to quit.')
+    answer = input('Would you like to choose a sound file to extract and show the emotion of the speeker? (yes/no)\n ')
     if answer.lower() == "yes":
-        try:
-            path=choose_file()
-            visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
-            if visualization.lower()=='yes':
-                visualizing_sound(path)
-            features=extract_features(path,mfcc=True, chroma=True, mel=True)
-            result = model.predict(features.reshape(1,-1))
-            return f"The extracted emotion is : {result[0]}"
-        except Exception as e:
-            print("The file doesn't work, enter another file please")
+        file_path = filedialog.askopenfilename()
+        features=extract_sound_features_from_user_input(file_path)
+        visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
+        if visualization.lower()=='yes':
+            visualizing_sound(file_path)
+        result = model.predict(features.reshape(1,-1))
+        return f"The extracted emotion is : {result[0]}"
