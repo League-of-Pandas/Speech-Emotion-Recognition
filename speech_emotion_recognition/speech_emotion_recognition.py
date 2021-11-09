@@ -5,12 +5,19 @@ import matplotlib.pyplot as plt
 from librosa import display
 import os
 import tkinter as tk
+root = tk.Tk()
+root.withdraw()
+
+
 
 from glob import glob
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from tkinter import filedialog
+
+from playsound import playsound
+from gtts import gTTS 
 
 def extract_features(file_title, mfcc, chroma, mel):
   '''
@@ -61,7 +68,7 @@ def loading_audio_data():
     """
     x = []
     y = []
-    for file in glob('sounds/Actor_*/*.wav'):
+    for file in glob('sounds/Actor_01/*.wav'):
         file_path = os.path.basename(file)
         emotion = emotion_labels[file_path.split("-")[2]]
         if emotion not in focused_emotion_labels:
@@ -94,19 +101,6 @@ def calculate_trained_model_accuracy():
     return accuracy
 
 
-def extract_sound_features_from_user_input(file_path):
-        """
-        this function takes a sound file (.wav) path from the user as input and analyze it to the sound features related to this sound
-        Arguments: string
-        returns: list
-        """
-        try:
-            feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
-            return feature
-        except Exception as e:
-            print("The file doesn't work, enter another file please")
-
-
 
 def visualizing_sound(file):
     '''
@@ -128,21 +122,53 @@ def visualizing_sound(file):
     plt.colorbar()
 
 
-def take_input():
+def choose_file():
+    '''
+    Argumen: None
+
+    return:
+    returns the path of the choosen file from file explorer
+    '''
+    file_path = filedialog.askopenfilename()
+    return file_path
+
+def speek(text):
+    try:
+        tts= gTTS(text=text, lang="en")
+        filename = "voice.mp3"
+        tts.save(filename)
+        playsound(filename)
+        return "recording1.wav"
+    except Exception as e:
+        print("Exception: "+ str(e))
+
+def extract_user_input_emotion():
     """
-    this function allows the user to choose a sound file and returns the extracted emotion from the input file, the waveform and spectogram of the input file if the user approves
-    Arguments: None
-    returns: list
+    Arguments:
+    None
+    Takes input from the user as a path for a (.wav) file.
+    return:
+    1. The extracted emotion.
+    2. The accuracy.
+    3. waveform and spectogram graphs if the user approved.
     """
-    answer = input('Would you like to choose a sound file to extract and show the emotion of the speeker? (yes/no)\n ')
+    speek("Welcome to the speech emotion recognitin app.")
+    speek("please enter (yes) to choose a file or (anything else) to quit.")
+    answer = input('please enter (yes) to choose a file or (anything else) to quit.')
     if answer.lower() == "yes":
-        file_path = filedialog.askopenfilename()
-        features=extract_sound_features_from_user_input(file_path)
-        visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
-        if visualization.lower()=='yes':
-            visualizing_sound(file_path)
-        result = model.predict(features.reshape(1,-1))
-        return f"The extracted emotion is : {result[0]}"
+        try:
+            path=choose_file()
+            speek("Would you like to see the Spectogram and Waveform of the choosen file? (yes/no).")
+            visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
+            if visualization.lower()=='yes':
+                visualizing_sound(path)
+            features=extract_features(path,mfcc=True, chroma=True, mel=True)
+            result = model.predict(features.reshape(1,-1))
+            return f"The extracted emotion is : {result[0]}"
+        except Exception as e:
+            speek("The file doesn't work, enter another file please.")
+            print("The file doesn't work, enter another file please.")
+
 
 from statistics import mode
 
@@ -153,10 +179,13 @@ def analyzing_multiple_emotions():
     return: list(the list of emotions that given from records in all records)
     """
     arr = []
+    speek("Please enter the number of records you want to analyze? ")
     number_of_files = input('Please enter the number of records you want to analyze \n')
     while not number_of_files.isdigit():
-         number_of_files = input('Please enter number \n')
+        speek("Please enter number")
+        number_of_files = input('Please enter number \n')
     for i in range(1, int(number_of_files) + 1):
+            speek("Please choose sound record")
             print(f'Please choose sound record {i}?\n')
             try:
                 file_path = filedialog.askopenfilename()
@@ -164,6 +193,7 @@ def analyzing_multiple_emotions():
                 result = model.predict(feature.reshape(1, -1))
                 arr.append(result[0])
             except Exception as e:
+                speek("The file doesn't work, enter another file please")
                 print("The file doesn't work, enter another file please")
     return arr
 
@@ -180,20 +210,23 @@ def suggest_songs(mood):
     returns: string, object 
     """
     if mood == "happy" or mood == "neutral":
-            song = random.choice(os.listdir("entertaining songs"))
-            path = f'entertaining songs/{song}'
-            play=Audio(path, rate=250)
-            return play,path
+        speek(f"you seem {mood} today so listen to entertaining songs")
+        song = random.choice(os.listdir("entertaining songs"))
+        path = f'entertaining songs/{song}'
+        play=Audio(path, rate=250)
+        return play,path
     elif mood == "fearful":
-            song = random.choice(os.listdir("calming songs"))
-            path = f'calming songs/{song}'
-            play=Audio(path, rate=250)
-            return play,path
+        speek(f"you seem {mood} today so listen to calming songs ")
+        song = random.choice(os.listdir("calming songs"))
+        path = f'calming songs/{song}'
+        play=Audio(path, rate=250)
+        return play,path
     elif mood == "sad":
-            song = random.choice(os.listdir("uplifting songs"))    
-            path = f'uplifting songs/{song}'
-            play=Audio(path, rate=250)
-            return play,path
+        speek(f"you seem {mood} today so listen to uplifting songs")
+        song = random.choice(os.listdir("uplifting songs"))    
+        path = f'uplifting songs/{song}'
+        play=Audio(path, rate=250)
+        return play,path
 
 def suggest_books(mood):
     """
@@ -206,11 +239,17 @@ def suggest_books(mood):
     calm_down = ["Big Magic: Creative Living Beyond Fear by Elizabeth Gilbert", "A Book That Takes Its Time: An Unhurried Adventure in Creative Mindfulness", "Deep Listening by Jillian Pransky", "Just Sit: A Meditation Guidebook for People Who Know They Should But Don't by Sukey Novogratz"]
     entertainment = ["Harry Potter and the Prisoner of Azkaban by J.K. Rowling, Mary GrandPré", "FURIOUSLY HAPPY BY JENNY LAWSON", "Me Talk Pretty One Day by David Sedaris"]
     if mood == "happy" or mood == "neutral":
-        return random.choice(entertainment)
+        book = random.choice(entertainment)
+        speek(f"you seem {mood} today so read {book}")
+        return book
     elif mood == "sad":
-        return random.choice(motivational)
+        book = random.choice(motivational)
+        speek(f"you seem {mood} today so read {book}")
+        return book
     elif mood == "fearful":
-        return random.choice(calm_down)
+        book = random.choice(calm_down)
+        speek(f"you seem {mood} today so read {book}")
+        return book
 
 def take_input_for_suggesting_songs_and_books():
     """
@@ -219,12 +258,16 @@ def take_input_for_suggesting_songs_and_books():
     Arguments: None
     Returns: object 
     """
+    the_most_common_emotion = analyzing_multiple_emotions()
+    mode(the_most_common_emotion)
     mood = mode(the_most_common_emotion)
     print(f"you seem {mood} today")
+    speek("do you want to listen to a song that helps you ? (yes/no)")
     answer = input("do you want to listen to a song that helps you ? (yes/no) \n >")
     if answer.lower() == "yes":
         play,path=suggest_songs(mood)
         return play
+    speek("do you want a recommendation for a book ? (yes/no) ")
     answer = input("do you want a recommendation for a book ? (yes/no) \n >")
     if answer.lower() == "yes":
         book = suggest_books(mood)
@@ -238,7 +281,8 @@ def take_input_for_suggesting_songs_and_books():
 
     
 if __name__ == "__main__":    
-    the_most_common_emotion = analyzing_multiple_emotions()
-    mode(the_most_common_emotion)
-    take_input_for_suggesting_songs_and_books()
+    # the_most_common_emotion = analyzing_multiple_emotions()
+    # mode(the_most_common_emotion)
+    # take_input_for_suggesting_songs_and_books()
+    suggest_songs("fearful")
     
