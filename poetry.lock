@@ -170,7 +170,7 @@ unicode_backport = ["unicodedata2"]
 name = "click"
 version = "8.0.3"
 description = "Composable command line interface toolkit"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -237,6 +237,23 @@ python-versions = ">=3.6"
 mccabe = ">=0.6.0,<0.7.0"
 pycodestyle = ">=2.8.0,<2.9.0"
 pyflakes = ">=2.4.0,<2.5.0"
+
+[[package]]
+name = "gtts"
+version = "2.2.3"
+description = "gTTS (Google Text-to-Speech), a Python library and CLI tool to interface with Google Translate text-to-speech API"
+category = "main"
+optional = false
+python-versions = ">=2.7"
+
+[package.dependencies]
+click = "*"
+requests = "*"
+six = "*"
+
+[package.extras]
+docs = ["sphinx", "sphinx-autobuild", "sphinx-rtd-theme", "sphinx-click", "towncrier"]
+tests = ["pytest (==4.6.11)", "pytest-cov", "flake8", "testfixtures", "mock", "six"]
 
 [[package]]
 name = "idna"
@@ -1103,6 +1120,20 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "sounddevice"
+version = "0.4.3"
+description = "Play and Record Sound with Python"
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[package.dependencies]
+CFFI = ">=1.0"
+
+[package.extras]
+numpy = ["numpy"]
+
+[[package]]
 name = "soundfile"
 version = "0.10.3.post1"
 description = "An audio library based on libsndfile, CFFI and NumPy"
@@ -1115,6 +1146,14 @@ cffi = ">=1.0"
 
 [package.extras]
 numpy = ["numpy"]
+
+[[package]]
+name = "speechrecognition"
+version = "3.8.1"
+description = "Library for performing speech recognition, with support for several engines and APIs, online and offline."
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "terminado"
@@ -1198,6 +1237,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 brotli = ["brotlipy (>=0.6.0)"]
 secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
+
+[[package]]
+name = "wavio"
+version = "0.0.4"
+description = "A Python module for reading and writing WAV files using numpy arrays."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+numpy = ">=1.6.0"
 
 [[package]]
 name = "wcwidth"
@@ -1395,6 +1445,10 @@ entrypoints = [
 flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d"},
     {file = "flake8-4.0.1.tar.gz", hash = "sha256:806e034dda44114815e23c16ef92f95c91e4c71100ff52813adf7132a6ad870d"},
+]
+gtts = [
+    {file = "gTTS-2.2.3-py3-none-any.whl", hash = "sha256:8376d9bde85ac8cda95ea92dcd12bf31a3efe9e810edcb04437a4151cbec30d6"},
+    {file = "gTTS-2.2.3.tar.gz", hash = "sha256:88cfaa112471867009a0450a696e5bc69cf1671fa0fa683fe17d0650023c863c"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
@@ -2025,12 +2079,22 @@ sniffio = [
     {file = "sniffio-1.2.0-py3-none-any.whl", hash = "sha256:471b71698eac1c2112a40ce2752bb2f4a4814c22a54a3eed3676bc0f5ca9f663"},
     {file = "sniffio-1.2.0.tar.gz", hash = "sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"},
 ]
+sounddevice = [
+    {file = "sounddevice-0.4.3-py3-none-any.whl", hash = "sha256:6078c9a0708f796a06727e3abe79e42c658a3b266bbbf487089e0595367af7f0"},
+    {file = "sounddevice-0.4.3-py3-none-macosx_10_6_x86_64.macosx_10_6_universal2.whl", hash = "sha256:8a3f9cfb3f7ee75bc00b393678a47cd18a759d714272995fe320b752c931d8ac"},
+    {file = "sounddevice-0.4.3-py3-none-win32.whl", hash = "sha256:b3394c9c0d7a4efe04e0729cab9ecad6d6d4753f39a565bf534297ef07f16b0e"},
+    {file = "sounddevice-0.4.3-py3-none-win_amd64.whl", hash = "sha256:8d4874c36cd8b4c2b3e4ea56906616ae379bf647c1fff64be56f5be980c8003d"},
+    {file = "sounddevice-0.4.3.tar.gz", hash = "sha256:f1667a7467b65fac4c4ebf668b4e9698eb7333fc3d32bc3c7ec9839ea7cb6c20"},
+]
 soundfile = [
     {file = "SoundFile-0.10.3.post1-py2.py3-none-any.whl", hash = "sha256:2d17e0a6fc2af0d6c1d868bafa5ec80aae6e186a97fec8db07ad6af29842fbc7"},
     {file = "SoundFile-0.10.3.post1-py2.py3.cp26.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp32.pp33-none-macosx_10_5_x86_64.macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.whl", hash = "sha256:5e342ee293b896d31da67617fe65d0bdca217af193991b0cb6052353b1e0e506"},
     {file = "SoundFile-0.10.3.post1-py2.py3.cp26.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp32.pp33-none-win32.whl", hash = "sha256:4555438c2c4f02b39fea2ed40f6ddeda88a80cd1ee9dd129be4d5f5134698cc2"},
     {file = "SoundFile-0.10.3.post1-py2.py3.cp26.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp32.pp33-none-win_amd64.whl", hash = "sha256:b361d4ac1519a2e516cabafa6bf7e93492f999f35d7d25350cd87fdc3e5cb27e"},
     {file = "SoundFile-0.10.3.post1.tar.gz", hash = "sha256:490cff42650733d1832728b937fe99fa1802896f5ef4d61bcf78cf7ebecb107b"},
+]
+speechrecognition = [
+    {file = "SpeechRecognition-3.8.1-py2.py3-none-any.whl", hash = "sha256:4d8f73a0c05ec70331c3bacaa89ecc06dfa8d9aba0899276664cda06ab597e8e"},
 ]
 terminado = [
     {file = "terminado-0.12.1-py3-none-any.whl", hash = "sha256:09fdde344324a1c9c6e610ee4ca165c4bb7f5bbf982fceeeb38998a988ef8452"},
@@ -2103,6 +2167,10 @@ typing-extensions = [
 urllib3 = [
     {file = "urllib3-1.26.7-py2.py3-none-any.whl", hash = "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"},
     {file = "urllib3-1.26.7.tar.gz", hash = "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"},
+]
+wavio = [
+    {file = "wavio-0.0.4-py2.py3-none-any.whl", hash = "sha256:3563900c5965e1824daf352ab7173840a799160c43546920cc089d753405a0a9"},
+    {file = "wavio-0.0.4.tar.gz", hash = "sha256:66d8f05e60e2c371364d537c25abf9ffbf4d8475e440ee2fbe73e000e9775fc8"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
