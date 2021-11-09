@@ -3,7 +3,6 @@ import builtins
 from speech_emotion_recognition import __version__
 from speech_emotion_recognition import speech_emotion_recognition
 from tkinter import filedialog
-from mock import Mock
 from unittest.mock import patch
 import pytest
 
