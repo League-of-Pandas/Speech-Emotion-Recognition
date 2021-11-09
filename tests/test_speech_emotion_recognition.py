@@ -1,3 +1,4 @@
+
 import builtins
 from speech_emotion_recognition import __version__
 from speech_emotion_recognition import speech_emotion_recognition
@@ -28,4 +29,8 @@ def test_extracting_features_from_input():
     expected = -284.02972412109375
     assert list(actual)[0] == expected
 
-    
+def test_suggest_song():   
+    arr = ['calming songs/Ava Max - So Am I [Official Music Video].mp3','calming songs/Josh Groban - You Raise Me Up (Official Music Video) _ Warner Vault.mp3','calming songs/Sia - Bird Set Free (Lyrics).mp3']
+    play,path = speech_emotion_recognition.suggest_songs('fearful')
+    actual = path
+    assert actual in arr

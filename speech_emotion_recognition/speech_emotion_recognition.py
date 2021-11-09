@@ -51,7 +51,7 @@ emotion_labels = {
   '07':'disgust',
   '08':'surprised'
 }
-focused_emotion_labels = ['happy', 'sad', 'angry', 'neutral']
+focused_emotion_labels = ['happy', 'sad', 'fearful', 'neutral']
 
 def loading_audio_data():
     """
@@ -166,5 +166,56 @@ def analyzing_multiple_emotions():
             except Exception as e:
                 print("The file doesn't work, enter another file please")
     return arr
-the_most_common_emotion = analyzing_multiple_emotions()
-mode(the_most_common_emotion)
+
+
+
+import random
+from IPython.display import Audio
+from statistics import mode
+
+def suggest_songs(mood):
+    """
+    this function takes the dominant emotion from a set of sound files for a person and suggests a song based on their mood
+    Arguments: string 
+    returns: string, object 
+    """
+    if mood == "happy" or mood == "neutral":
+            song = random.choice(os.listdir("entertaining songs"))
+            path = f'entertaining songs/{song}'
+            play=Audio(path, rate=250)
+            return play,path
+    elif mood == "fearful":
+            song = random.choice(os.listdir("calming songs"))
+            path = f'calming songs/{song}'
+            play=Audio(path, rate=250)
+            return play,path
+    elif mood == "sad":
+            song = random.choice(os.listdir("uplifting songs"))    
+            path = f'uplifting songs/{song}'
+            play=Audio(path, rate=250)
+            return play,path
+        
+def take_input_for_suggesting_songs():
+    """
+    this function takes an answer from the user if they want to listen to a song or not
+    Arguments: None
+    Returns: object 
+    """
+    mood=mode(the_most_common_emotion)
+    print(f"you seem {mood} today")
+    answer = input("do you want to listen to a song that helps you ? (yes/no) \n >")
+    if answer.lower() == "yes":
+        play,path=suggest_songs(mood)
+        return play
+
+
+  
+    
+
+
+
+    
+if __name__ == "__main__":    
+    the_most_common_emotion = analyzing_multiple_emotions()
+    mode(the_most_common_emotion)
+    take_input_for_suggesting_songs() 
