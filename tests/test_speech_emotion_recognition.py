@@ -34,3 +34,7 @@ def test_suggest_song():
     play,path = speech_emotion_recognition.suggest_songs('fearful')
     actual = path
     assert actual in arr
+def test_suggest_books():
+    expected = ["Big Magic: Creative Living Beyond Fear by Elizabeth Gilbert", "A Book That Takes Its Time: An Unhurried Adventure in Creative Mindfulness", "Deep Listening by Jillian Pransky", "Just Sit: A Meditation Guidebook for People Who Know They Should But Don't by Sukey Novogratz"]
+    actual = speech_emotion_recognition.suggest_books('fearful')
+    assert actual in expected

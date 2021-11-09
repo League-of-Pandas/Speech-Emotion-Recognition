@@ -194,19 +194,41 @@ def suggest_songs(mood):
             path = f'uplifting songs/{song}'
             play=Audio(path, rate=250)
             return play,path
-        
-def take_input_for_suggesting_songs():
+
+def suggest_books(mood):
+    """
+    function to check on mood and return a suggestion book dealing with this mood 
+    Argument: string (most common emotion)
+    return: string (recommened book for related emotion)
+    """
+    motivational = ["The 5 AM Club: Own Your Morning. Elevate Your Life", "Think and Grow Rich by Napoleon Hill", "Unlimited Power by Tony Robbins", "How To Win Friends and Influence People by Dale Carnegie",
+                    "The Four Hour Work Week by Tim Ferriss", "The 7 Habits of Highly Effective People by Stephen Covey"]
+    calm_down = ["Big Magic: Creative Living Beyond Fear by Elizabeth Gilbert", "A Book That Takes Its Time: An Unhurried Adventure in Creative Mindfulness", "Deep Listening by Jillian Pransky", "Just Sit: A Meditation Guidebook for People Who Know They Should But Don't by Sukey Novogratz"]
+    entertainment = ["Harry Potter and the Prisoner of Azkaban by J.K. Rowling, Mary GrandPré", "FURIOUSLY HAPPY BY JENNY LAWSON", "Me Talk Pretty One Day by David Sedaris"]
+    if mood == "happy" or mood == "neutral":
+        return random.choice(entertainment)
+    elif mood == "sad":
+        return random.choice(motivational)
+    elif mood == "fearful":
+        return random.choice(calm_down)
+
+def take_input_for_suggesting_songs_and_books():
     """
     this function takes an answer from the user if they want to listen to a song or not
+    and if they  want a recommendation for a book
     Arguments: None
     Returns: object 
     """
-    mood=mode(the_most_common_emotion)
+    mood = mode(the_most_common_emotion)
     print(f"you seem {mood} today")
     answer = input("do you want to listen to a song that helps you ? (yes/no) \n >")
     if answer.lower() == "yes":
         play,path=suggest_songs(mood)
         return play
+    answer = input("do you want a recommendation for a book ? (yes/no) \n >")
+    if answer.lower() == "yes":
+        book = suggest_books(mood)
+        return book
 
 
   
@@ -218,4 +240,5 @@ def take_input_for_suggesting_songs():
 if __name__ == "__main__":    
     the_most_common_emotion = analyzing_multiple_emotions()
     mode(the_most_common_emotion)
-    take_input_for_suggesting_songs() 
+    take_input_for_suggesting_songs_and_books()
+    
