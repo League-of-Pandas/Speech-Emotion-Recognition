@@ -2,22 +2,25 @@ import librosa as lb
 import soundfile as sf
 import numpy as np
 import matplotlib.pyplot as plt
-from librosa import display
 import os
 import tkinter as tk
-root = tk.Tk()
-root.withdraw()
+import random
+import sounddevice as sd
+import wavio as wv
 
-
-
+from IPython.display import Audio
+from statistics import mode
+from librosa import display
 from glob import glob
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from tkinter import filedialog
-
 from playsound import playsound
 from gtts import gTTS 
+
+root = tk.Tk()
+root.withdraw()
 
 def extract_features(file_title, mfcc, chroma, mel):
   '''
@@ -122,16 +125,6 @@ def visualizing_sound(file):
     plt.colorbar()
 
 
-def choose_file():
-    '''
-    Argumen: None
-
-    return:
-    returns the path of the choosen file from file explorer
-    '''
-    file_path = filedialog.askopenfilename()
-    return file_path
-
 def speek(text):
     try:
         tts= gTTS(text=text, lang="en")
@@ -141,6 +134,15 @@ def speek(text):
         return "recording1.wav"
     except Exception as e:
         print("Exception: "+ str(e))
+
+def listen():
+    freq = 44100
+    duration = 1
+    recording = sd.rec(int(duration * freq),
+                   samplerate=freq, channels=2)
+    sd.wait()
+    xy = wv.write("recording1.wav", recording, freq, sampwidth=2)
+    return "recording1.wav"
 
 def extract_user_input_emotion():
     """
@@ -153,22 +155,34 @@ def extract_user_input_emotion():
     3. waveform and spectogram graphs if the user approved.
     """
     speek("Welcome to the speech emotion recognitin app.")
-    speek("please enter (yes) to choose a file or (anything else) to quit.")
-    answer = input('please enter (yes) to choose a file or (anything else) to quit.')
+    speek("please enter (yes) to choose a file or enter (speak) to to analize your voice live or enter (q) to quit.")
+    answer = input('please enter (yes) to choose a file or enter (speak) to to analize your voice live or enter (q) to quit.')
     if answer.lower() == "yes":
         try:
-            path=choose_file()
+            path=filedialog.askopenfilename()
             speek("Would you like to see the Spectogram and Waveform of the choosen file? (yes/no).")
             visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
             if visualization.lower()=='yes':
                 visualizing_sound(path)
             features=extract_features(path,mfcc=True, chroma=True, mel=True)
             result = model.predict(features.reshape(1,-1))
+            speek(f"The extracted emotion is : {result[0]}")
             return f"The extracted emotion is : {result[0]}"
         except Exception as e:
             speek("The file doesn't work, enter another file please.")
             print("The file doesn't work, enter another file please.")
-
+    elif answer.lower()=='speak':
+        speek('speak now')
+        print('speak now')
+        speech=listen()
+        speek("Would you like to see the Spectogram and Waveform of the choosen file? (yes/no).")
+        visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
+        if visualization.lower()=='yes':
+            visualizing_sound(speech)
+        features=extract_features(speech,mfcc=True, chroma=True, mel=True)
+        result = model.predict(features.reshape(1,-1))
+        speek(f"The extracted emotion is : {result[0]}")
+        return f"The extracted emotion is : {result[0]}"
 
 from statistics import mode
 
@@ -199,10 +213,6 @@ def analyzing_multiple_emotions():
 
 
 
-import random
-from IPython.display import Audio
-from statistics import mode
-
 def suggest_songs(mood):
     """
     this function takes the dominant emotion from a set of sound files for a person and suggests a song based on their mood
@@ -228,6 +238,7 @@ def suggest_songs(mood):
         play=Audio(path, rate=250)
         return play,path
 
+
 def suggest_books(mood):
     """
     function to check on mood and return a suggestion book dealing with this mood 
@@ -250,6 +261,10 @@ def suggest_books(mood):
         book = random.choice(calm_down)
         speek(f"you seem {mood} today so read {book}")
         return book
+
+
+
+
 
 def take_input_for_suggesting_songs_and_books():
     """
@@ -274,15 +289,9 @@ def take_input_for_suggesting_songs_and_books():
         return book
 
 
-  
-    
-
-
-
-    
 if __name__ == "__main__":    
-    # the_most_common_emotion = analyzing_multiple_emotions()
-    # mode(the_most_common_emotion)
-    # take_input_for_suggesting_songs_and_books()
+    the_most_common_emotion = analyzing_multiple_emotions()
+    mode(the_most_common_emotion)
+    take_input_for_suggesting_songs_and_books()
     suggest_songs("fearful")
     
