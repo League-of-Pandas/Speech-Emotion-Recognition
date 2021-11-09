@@ -11,6 +11,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from tkinter import filedialog
+import wave
+w = wave.open("e:/LOCAL/Betrayer/Metalik Klinik1-Anak Sekolah.mp3","r")
 
 def extract_features(file_title, mfcc, chroma, mel):
   '''
@@ -118,6 +120,29 @@ def take_input():
     if answer.lower() == "yes":
         file_path = filedialog.askopenfilename()
         return extract_sound_features_from_user_input(file_path)
+
+
+from statistics import mode
+
+def analyzing_multiple_emotions():
+    arr = []
+    number_of_files = input('Please enter the number of records you want to analyze \n')
+    while not number_of_files.isdigit():
+         number_of_files = input('Please enter number \n')
+    for i in range(1, int(number_of_files) + 1):
+            print(f'Please choose sound record {i}?\n')
+            try:
+                file_path = filedialog.askopenfilename()
+                feature = extract_features(file_path, mfcc=True, chroma=True, mel=True)
+                result = model.predict(feature.reshape(1, -1))
+                arr.append(result[0])
+            except Exception as e:
+                print("The file doesn't work, enter another file please")
+    return arr
+the_most_common_emotion = analyzing_multiple_emotions()
+mode(the_most_common_emotion) 
+
+
 
 
 

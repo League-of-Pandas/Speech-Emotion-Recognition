@@ -5,6 +5,7 @@ from tkinter import filedialog
 from mock import Mock
 from unittest.mock import patch
 import pytest
+from statistics import mode
 
 def test_version():
     assert __version__ == '0.1.0'
@@ -29,7 +30,14 @@ def test_extracting_features_from_input():
     expected = -529.4510498046875
     assert list(actual)[0] == expected
 
-    
+def test_analyzing_multiple_emotions():
+    expected = 'None'
+    common = 'None'
+    if common == 'happy' or common == 'sad' or common == 'neutral' or common == 'fearful':
+        expected = common
+    actual = mode(speech_emotion_recognition.the_most_common_emotion)
+    assert expected == actual
+
 
 
 
