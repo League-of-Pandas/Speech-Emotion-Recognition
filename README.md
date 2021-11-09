@@ -2,12 +2,56 @@
 
 a program that takes a sound file contains speech and analyzie the emotions of the speeker
 
+---
+
 ## Group Members:
 
 1. Tahany Ali
 2. Tasneem Al-Absi
 3. Abdullah Nazzal
 4. Anas Abusaif
+
+---
+
+## Tools Used
+VS Code
+PyCharm
+
+- Python
+- Pytest
+- Poetry
+- PyEnv
+---
+
+## Recent Updates
+
+#### V 1.0
+
+
+---
+
+## Getting Started
+
+Clone this repository to your local machine.
+
+```
+$ git clone git@github.com:League-of-Pandas/Speech-Emotion-Recognition.git
+```
+```
+cd Speech-Emotion-Recognition
+```
+Once downloaded, activate your virtual environment and run by ```poetry shell```
+
+
+The poetry tools will automatically install any dependencies. Before running the application ```poetry install```
+
+
+Unit testing is included in the 
+```tests/test_speech_emotion_recognition.py ```
+
+project using the pytest test framework.
+---
+
 
 
 ## Trello board
