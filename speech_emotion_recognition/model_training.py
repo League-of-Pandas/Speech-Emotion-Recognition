@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 
-
+import pickle
 
 def extract_features(file_title, mfcc, chroma, mel):
   '''
@@ -70,12 +70,6 @@ def loading_audio_data():
     final_dataset = train_test_split(np.array(x), y, test_size=0.1, random_state=9)
     return final_dataset
 
-
-model = MLPClassifier(hidden_layer_sizes=(200,), learning_rate='adaptive', max_iter=400)
-X_train, X_test, y_train, y_test = loading_audio_data()
-model.fit(X_train, y_train)  
-
-
 def calculate_trained_model_accuracy():
     '''
     Arguments:
@@ -91,10 +85,15 @@ def calculate_trained_model_accuracy():
     accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
     return accuracy
 
-
 model = MLPClassifier(hidden_layer_sizes=(200,), learning_rate='adaptive', max_iter=400)
 X_train, X_test, y_train, y_test = loading_audio_data()
-model.fit(X_train, y_train)  
+model.fit(X_train, y_train)
 
+# now we save the model
+# make result directory if doesn't exist yet
+if not os.path.isdir("result"):
+    os.mkdir("result")
 
-calculate_trained_model_accuracy()
+pickle.dump(model, open("result/mlp_classifier.model2", "wb"))
+
+print(calculate_trained_model_accuracy())

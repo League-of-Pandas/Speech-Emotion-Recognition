@@ -1,5 +1,3 @@
-from model_training import model
-
 import librosa as lb
 import soundfile as sf
 import numpy as np
@@ -14,6 +12,13 @@ from statistics import mode
 from librosa import display
 from playsound import playsound
 from gtts import gTTS 
+
+import pickle
+
+
+infile = open("result/69,2.model",'rb')
+model = pickle.load(infile)
+infile.close()
 
 
 def extract_features(file_title, mfcc, chroma, mel):
@@ -45,8 +50,6 @@ def extract_features(file_title, mfcc, chroma, mel):
   except :
     raise FileNotFoundError
 
-
-
 def visualizing_sound(file):
     '''
     Argument:
@@ -66,7 +69,6 @@ def visualizing_sound(file):
     lb.display.specshow(Xdb, sr=fs, x_axis='time', y_axis='hz')
     plt.colorbar()
 
-
 def speek(text):
     try:
         tts= gTTS(text=text, lang="en")
@@ -79,13 +81,12 @@ def speek(text):
 
 def listen():
     freq = 44100
-    duration = 1
+    duration = 2
     recording = sd.rec(int(duration * freq),
                    samplerate=freq, channels=2)
     sd.wait()
     xy = wv.write("recording1.wav", recording, freq, sampwidth=2)
     return "recording1.wav"
-
 
 def extract_user_input_emotion():
     """
@@ -99,37 +100,21 @@ def extract_user_input_emotion():
     """
     speek("Welcome to the speech emotion recognitin app.")
     speek("please enter (yes) to enter a path to the desiered filr or enter (speak) to to analize your voice live or enter (q) to quit.")
-    answer = input('please enter (yes) to choose a file or enter (speak) to to analize your voice live or enter (q) to quit.')
+    answer = input('please enter (yes) to choose a file or enter (Any Thing Else) to quit. \n >')
     if answer.lower() == "yes":
         speek('please enter the path')
-        path=input('please enter the path')
+        path=input('please enter the path: \n >')
         try:
-            # speek("Would you like to see the Spectogram and Waveform of the choosen file? (yes/no).")
-            # visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
-            # if visualization.lower()=='yes':
-            #     visualizing_sound(path)
             features=extract_features(path,mfcc=True, chroma=True, mel=True)
             result = model.predict(features.reshape(1,-1))
             speek(f"The extracted emotion is : {result[0]}")
+            print(f"The extracted emotion is : {result[0]}")
             return f"The extracted emotion is : {result[0]}"
         except Exception as e:
             speek("The file doesn't work, enter another file please.")
             print("The file doesn't work, enter another file please.")
-    elif answer.lower()=='speak':
-        speek('speak now')
-        print('speak now')
-        speech=listen()
-        # speek("Would you like to see the Spectogram and Waveform of the choosen file? (yes/no).")
-        # visualization=input('Would you like to see the Spectogram and Waveform of the choosen file? (yes/no)')
-        # if visualization.lower()=='yes':
-        #     visualizing_sound(speech)
-        features=extract_features(speech,mfcc=True, chroma=True, mel=True)
-        result = model.predict(features.reshape(1,-1))
-        speek(f"The extracted emotion is : {result[0]}")
-        return f"The extracted emotion is : {result[0]}"
 
-
-def analyzing_multiple_emotions(path):
+def analyzing_multiple_emotions():
     """
     Arguments: None
     function takes number of sound records and analyze each one to give it related emotion
@@ -142,8 +127,9 @@ def analyzing_multiple_emotions(path):
         speek("Please enter number")
         number_of_files = input('Please enter number \n')
     for i in range(1, int(number_of_files) + 1):
-            speek("Please choose sound record")
+            speek("Please choose sound record number {i} ")
             print(f'Please choose sound record {i}?\n')
+            path=input('please enter the path: \n >')
             try:
                 feature = extract_features(path, mfcc=True, chroma=True, mel=True)
                 result = model.predict(feature.reshape(1, -1))
@@ -151,9 +137,9 @@ def analyzing_multiple_emotions(path):
             except Exception as e:
                 speek("The file doesn't work, enter another file please")
                 print("The file doesn't work, enter another file please")
+    for i in range(len(arr)):
+        print(arr[i])
     return arr
-
-
 
 def suggest_songs(mood):
     """
@@ -180,7 +166,6 @@ def suggest_songs(mood):
         play=Audio(path, rate=250)
         return play,path
 
-
 def suggest_books(mood):
     """
     function to check on mood and return a suggestion book dealing with this mood 
@@ -204,8 +189,6 @@ def suggest_books(mood):
         speek(f"you seem {mood} today so read {book}")
         return book
 
-
-
 def take_input_for_suggesting_songs_and_books():
     """
     this function takes an answer from the user if they want to listen to a song or not
@@ -228,11 +211,12 @@ def take_input_for_suggesting_songs_and_books():
         book = suggest_books(mood)
         return book
 
-
 if __name__ == "__main__":    
     # the_most_common_emotion = analyzing_multiple_emotions()
     # mode(the_most_common_emotion)
     # take_input_for_suggesting_songs_and_books()
     # suggest_songs("fearful")
-    extract_user_input_emotion()
 
+    # extract_user_input_emotion()yes
+    # analyzing_multiple_emotions()
+    take_input_for_suggesting_songs_and_books()
