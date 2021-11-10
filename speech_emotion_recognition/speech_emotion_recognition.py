@@ -50,24 +50,24 @@ def extract_features(file_title, mfcc, chroma, mel):
   except :
     raise FileNotFoundError
 
-def visualizing_sound(file):
-    '''
-    Argument:
-    a path for a (.wav) file
+# def visualizing_sound(file):
+#     '''
+#     Argument:
+#     a path for a (.wav) file
 
-    return:
-    1. spectogram of the choosen file
-    2. waveform of the choosen file
-    '''
-    x, fs = lb.load(file)
-    lb.display.waveplot(x, sr=fs)
-    X = lb.stft(x)
-    Xdb = lb.amplitude_to_db(abs(X))
-    plt.title('Waveform')
-    plt.figure(figsize=(14, 5))
-    plt.title('Spectogram')
-    lb.display.specshow(Xdb, sr=fs, x_axis='time', y_axis='hz')
-    plt.colorbar()
+#     return:
+#     1. spectogram of the choosen file
+#     2. waveform of the choosen file
+#     '''
+#     x, fs = lb.load(file)
+#     lb.display.waveplot(x, sr=fs)
+#     X = lb.stft(x)
+#     Xdb = lb.amplitude_to_db(abs(X))
+#     plt.title('Waveform')
+#     plt.figure(figsize=(14, 5))
+#     plt.title('Spectogram')
+#     lb.display.specshow(Xdb, sr=fs, x_axis='time', y_axis='hz')
+#     plt.colorbar()
 
 def speek(text):
     try:
@@ -79,14 +79,13 @@ def speek(text):
     except Exception as e:
         print("Exception: "+ str(e))
 
-def listen():
-    freq = 44100
-    duration = 2
-    recording = sd.rec(int(duration * freq),
-                   samplerate=freq, channels=2)
-    sd.wait()
-    xy = wv.write("recording1.wav", recording, freq, sampwidth=2)
-    return "recording1.wav"
+def extract_features_from_user_input(path):
+    return extract_features(path,mfcc=True, chroma=True, mel=True)
+
+def extract_emotion_from_user_input(path):
+    features=extract_features(path,mfcc=True, chroma=True, mel=True)
+    result = model.predict(features.reshape(1,-1))
+    return result[0]
 
 def extract_user_input_emotion():
     """
@@ -99,7 +98,7 @@ def extract_user_input_emotion():
     3. waveform and spectogram graphs if the user approved.
     """
     speek("Welcome to the speech emotion recognitin app.")
-    speek("please enter (yes) to enter a path to the desiered filr or enter (speak) to to analize your voice live or enter (q) to quit.")
+    speek("please enter (yes) to enter a path to the desiered filr or enter (Enter) to quit.")
     answer = input('please enter (yes) to choose a file or enter (Any Thing Else) to quit. \n >')
     if answer.lower() == "yes":
         speek('please enter the path')
@@ -217,6 +216,20 @@ if __name__ == "__main__":
     # take_input_for_suggesting_songs_and_books()
     # suggest_songs("fearful")
 
-    # extract_user_input_emotion()yes
+    # extract_features('sounds/Actor_01/03-01-01-01-01-01-01.wav',True,True,True)[0]
+    extract_user_input_emotion()
     # analyzing_multiple_emotions()
-    take_input_for_suggesting_songs_and_books()
+    # suggest_books("happy")
+    # suggest_songs("happy")
+    # take_input_for_suggesting_songs_and_books()
+    # speek("hello")
+    # extract_features_from_user_input('happy/female2_happy_1a_2.wav')
+    # extract_emotion_from_user_input('happy/female2_happy_1a_2.wav')
+    # ----------------------------
+    # extract_features('sounds/Actor_01/03-01-01-01-01-01-01.wav',True,True,True)[0]
+    # path = "missing.txt"
+    # extract_features(path,True,True,True)
+    #-----------------------------
+    # path = "happy/male1_happy_10a_1.wav"
+    # extract_features_from_user_input(path)
+    

@@ -14,6 +14,7 @@ sounddevice = "^0.4.3"
 wavio = "^0.0.4"
 gTTS = "^2.2.3"
 SpeechRecognition = "^3.8.1"
+coverage = "^6.1.1"
 
 
 [tool.poetry.dev-dependencies]
